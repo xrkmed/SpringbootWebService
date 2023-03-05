@@ -35,9 +35,18 @@ public class PlayerResources {
 	}
 	
 	@GetMapping(value = "/find/{name}")
-	public ResponseEntity<Player> findPlayer(@PathVariable("name") String param){
-		Player _p = service.findPlayer(param);
-		return ResponseEntity.ok().body(_p);
+	public <T> ResponseEntity<Player> findPlayer(@PathVariable("name") T param){
+		try {
+			if(Integer.parseInt(param.toString()) > 0) {
+				Player _p = service.findById(Integer.parseInt(param.toString()));
+				return ResponseEntity.ok().body(_p);
+			}
+		}catch(NumberFormatException e) {
+			Player _p = service.findPlayer(param.toString());
+			return ResponseEntity.ok().body(_p);
+		}
+		
+		return null;
 	}
 	
 	@GetMapping(value = "/all")

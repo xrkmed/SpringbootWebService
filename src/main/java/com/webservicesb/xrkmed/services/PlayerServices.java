@@ -19,7 +19,6 @@ public class PlayerServices {
 	
 	private ArrayList<Player> playersDatabase = new ArrayList<>();
 	
-	
 	public Player findPlayer(String findParam){
 		if(playersDatabase.size() == 0) { //only for debug
 			playersDatabase.add(new Player(playersDatabase.size()+1, "Christian", "christian@gmail.com", "123456", false));
@@ -28,12 +27,12 @@ public class PlayerServices {
 			playersDatabase.add(new Player(playersDatabase.size()+1, "Rafael", "rafael@gmail.com", "123456", false));
 		}
 		
-		System.out.println(playersDatabase.size());
-		System.out.println(findParam);
-		
-		List<Player> filteredList = playersDatabase.stream().filter(x -> x.getName().toLowerCase().contains(findParam.toLowerCase())).collect(Collectors.toList());
-		System.out.println(filteredList.size());
-		return filteredList.get(0);
+		try {
+			List<Player> filteredList = playersDatabase.stream().filter(x -> x.getName().toLowerCase().contains(findParam.toLowerCase())).collect(Collectors.toList());
+			return filteredList.get(0);
+		}catch(Exception e) {
+			return null;
+		}
 	}
 	
 	public List<Player> findPlayers(String findParam){
@@ -44,9 +43,21 @@ public class PlayerServices {
 			playersDatabase.add(new Player(playersDatabase.size()+1, "Rafael", "rafael@gmail.com", "123456", false));
 		}
 		
-		
-		List<Player> filteredList = playersDatabase.stream().filter(x -> x.getName().toLowerCase().contains(findParam.toLowerCase())).collect(Collectors.toList());
-		return filteredList;
+		try {
+			List<Player> filteredList = playersDatabase.stream().filter(x -> x.getName().toLowerCase().contains(findParam.toLowerCase())).collect(Collectors.toList());
+			return filteredList;
+		}catch(Exception e) {
+			return null;
+		}
 	}
 	
+	public Player findById(long Id) {
+		try {
+			System.out.println(Id);
+			Player idPlayer = playersDatabase.stream().filter(p -> p.getId() == Id).limit(1).collect(Collectors.toList()).get(0);
+			return idPlayer;
+		}catch(Exception e) {
+			return null;
+		}
+	}
 }
